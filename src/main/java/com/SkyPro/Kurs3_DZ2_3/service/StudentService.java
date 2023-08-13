@@ -2,59 +2,59 @@ package com.SkyPro.Kurs3_DZ2_3.service;
 
 
 import com.SkyPro.Kurs3_DZ2_3.exception.DataNotFoundException;
+import com.SkyPro.Kurs3_DZ2_3.exception.FacultyNotFoundException;
+import com.SkyPro.Kurs3_DZ2_3.exception.StudentNotFoundException;
+import com.SkyPro.Kurs3_DZ2_3.model.Faculty;
 import com.SkyPro.Kurs3_DZ2_3.model.Student;
+import com.SkyPro.Kurs3_DZ2_3.repository.StudentRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class StudentService {
 
+    private final StudentRepository studentRepository;
 
-    private final Map <Long, Student> map = new HashMap<>();
-    private Long COUNTER = 1L;
+    public StudentService(StudentRepository studentRepository) {
+        this.studentRepository = studentRepository;
+    }
 
     public Student getById(Long id) {
-        return map.get(id);
+
+        return studentRepository.findById(id)
+                .orElseThrow(StudentNotFoundException::new);
     }
 
     public Collection<Student> getAll() {
-        return map.values();
+        return studentRepository.findAll();
 
     }
-    public Collection<Student>getByAge(int age){
-
-        return map.values().stream()
-                .filter(s->s.getAge()==age)
-                .collect(Collectors.toList());
+    public Collection<Student>getByAge(Integer age){
+        return studentRepository.findAllByAge(age);
     }
 
 
     public Student create(Student student) {
-        Long nextId = COUNTER++;
-        student.setId(nextId);
-        map.put(student.getId(), student);
-        return student;
+        return studentRepository.save(student);
     }
 
     public Student update(Long id, Student student) {
-        if (!map.containsKey(id)) {
-            throw new DataNotFoundException();
-        }
-        Student existingStudent = map.get(id);
-        existingStudent.setName(student.getName());
-        existingStudent.setAge(student.getAge());
+        Student existingStudent = studentRepository.findById(id)
+                        .orElseThrow (StudentNotFoundException::new);
+       Optional.ofNullable(student.getName()).ifPresent(existingStudent::setName);
+        Optional.ofNullable(student.getAge()).ifPresent(existingStudent::setAge);
+        return studentRepository.save(existingStudent);
+    }
+
+    public Student remove (Long id){
+        Student existingStudent = studentRepository.findById(id)
+                .orElseThrow(StudentNotFoundException::new);
+        studentRepository.delete(existingStudent);
         return existingStudent;
-    }
-
-    public void delete (Long id){
-        if (map.remove(id)==null) {
-            throw new DataNotFoundException();
-        }
-    }
-
-
+            }
 }

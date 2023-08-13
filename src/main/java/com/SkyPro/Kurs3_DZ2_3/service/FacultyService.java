@@ -2,7 +2,9 @@ package com.SkyPro.Kurs3_DZ2_3.service;
 
 
 import com.SkyPro.Kurs3_DZ2_3.exception.DataNotFoundException;
+import com.SkyPro.Kurs3_DZ2_3.exception.FacultyNotFoundException;
 import com.SkyPro.Kurs3_DZ2_3.model.Faculty;
+import com.SkyPro.Kurs3_DZ2_3.repository.FacultyRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -12,45 +14,48 @@ import java.util.stream.Collectors;
 
 @Service
 public class FacultyService {
-    private final Map<Long, Faculty> map = new HashMap<>();
-    private Long COUNTER = 1L;
+
+    private final FacultyRepository facultyRepository;
+
+    public FacultyService(FacultyRepository facultyRepository) {
+        this.facultyRepository = facultyRepository;
+    }
 
     public Faculty getById(Long id) {
-        return map.get(id);
+        return facultyRepository.findById(id).orElseThrow(FacultyNotFoundException::new);
     }
 
     public Collection<Faculty> getAll() {
-        return map.values();
+        return facultyRepository.findAll();
 
     }
     public Collection<Faculty>getByColor(String color){
 
-        return map.values().stream()
-                .filter(s->s.getColor().equalsIgnoreCase(color))
-                .collect(Collectors.toList());
+        return facultyRepository.findAllByColor(color);
     }
 
     public Faculty create(Faculty faculty) {
-        Long nextId = COUNTER++;
-        faculty.setId(nextId);
-        map.put(faculty.getId(), faculty);
-        return faculty;
+
+        return facultyRepository.save(faculty);
     }
 
     public Faculty update(Long id, Faculty faculty) {
-        if (!map.containsKey(id)) {
-            throw new DataNotFoundException();
+        Faculty existingFaculty = facultyRepository.findById(id)
+                .orElseThrow (FacultyNotFoundException::new);
+        if(faculty.getColor()!=null){
+        existingFaculty.setColor((faculty.getColor()));
         }
-        Faculty existingFaculty = map.get(id);
-        existingFaculty.setName(faculty.getName());
-        existingFaculty.setColor(faculty.getColor());
-        return existingFaculty;
+        if(faculty.getName()!=null){
+        existingFaculty.setName((faculty.getName()));
+        }
+        return facultyRepository.save(existingFaculty);
     }
 
-    public void delete (Long id){
-        if (map.remove(id)==null) {
-            throw new DataNotFoundException();
-        }
+    public Faculty remove ( long id){
+        Faculty faculty = facultyRepository.findById(id)
+                .orElseThrow(FacultyNotFoundException::new);
+        facultyRepository.delete(faculty);
+        return faculty;
     }
 }
 
