@@ -1,12 +1,14 @@
 package com.SkyPro.Kurs3_DZ2_3.model;
 
+import javax.persistence.Entity;
 import java.util.Objects;
-
+@Entity
 public class Student {
     private Long id;
     private String name;
     private int age;
-
+    public Student() {
+    }
     public Student(Long id, String name, int age) {
         this.id = id;
         this.name = name;
