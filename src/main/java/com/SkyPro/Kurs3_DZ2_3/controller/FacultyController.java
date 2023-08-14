@@ -30,6 +30,11 @@ public class FacultyController {
         return facultyService.getByColor(color);
     }
 
+    @GetMapping("/by-color-or-name")
+    public Collection <Faculty> getByColorOrName (@RequestParam String search){
+        return facultyService.getByColorOrName(search,search);
+    }
+
     @PostMapping
     public  Faculty create(@RequestBody Faculty faculty){
         return facultyService.create(faculty);
