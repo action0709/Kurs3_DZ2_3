@@ -14,7 +14,7 @@ public class Faculty {
     private String color;
     @OneToMany(mappedBy = "faculty")
     @JsonIgnore
-    List<Student> students;
+    List<Student> student;
     public Faculty() {
     }
 
@@ -48,12 +48,12 @@ public class Faculty {
         this.color = color;
     }
 
-    public List<Student> getStudents() {
-        return students;
+    public List<Student> getStudent() {
+        return student;
     }
 
-    public void setStudents(List<Student> students) {
-        this.students = students;
+    public void setStudent(List<Student> student) {
+        this.student = student;
     }
 
     @Override
