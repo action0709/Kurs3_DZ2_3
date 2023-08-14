@@ -61,5 +61,10 @@ public class FacultyService {
         facultyRepository.delete(faculty);
         return faculty;
     }
+
+    public Faculty getByStudent(Long studentId){
+        return facultyRepository.findByStudent_Id(studentId)
+                .orElseThrow(FacultyNotFoundException::new);
+    }
 }
 

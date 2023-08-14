@@ -1,9 +1,6 @@
 package com.SkyPro.Kurs3_DZ2_3.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Objects;
 @Entity
 public class Student {
@@ -13,7 +10,18 @@ public class Student {
     private Long id;
     private String name;
     private Integer age;
+@ManyToOne
+@JoinColumn(name="faculty_id")
+    private Faculty faculty;
     public Student() {
+    }
+
+    public Faculty getFaculty() {
+        return faculty;
+    }
+
+    public void setFaculty(Faculty faculty) {
+        this.faculty = faculty;
     }
 
     public Student(Long id, String name, Integer age) {

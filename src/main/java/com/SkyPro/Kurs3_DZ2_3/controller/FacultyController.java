@@ -49,4 +49,8 @@ public class FacultyController {
 
         facultyService.remove(id);
     }
+    @GetMapping("/by-student")
+    public Faculty getByStudent(@RequestParam Long studentId){
+        return facultyService.getByStudent(studentId);
+    }
 }
