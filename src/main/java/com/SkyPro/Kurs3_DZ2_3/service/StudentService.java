@@ -51,7 +51,7 @@ public class StudentService {
         return studentRepository.save(existingStudent);
     }
 
-    public Student remove (Long id){
+    public Student remove (long id){
         Student existingStudent = studentRepository.findById(id)
                 .orElseThrow(StudentNotFoundException::new);
         studentRepository.delete(existingStudent);

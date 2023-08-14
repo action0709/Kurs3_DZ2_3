@@ -51,7 +51,7 @@ public class FacultyService {
         return facultyRepository.save(existingFaculty);
     }
 
-    public Faculty remove ( long id){
+    public Faculty remove ( Long id){
         Faculty faculty = facultyRepository.findById(id)
                 .orElseThrow(FacultyNotFoundException::new);
         facultyRepository.delete(faculty);
