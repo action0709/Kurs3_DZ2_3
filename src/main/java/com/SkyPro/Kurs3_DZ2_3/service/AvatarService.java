@@ -29,6 +29,10 @@ private Path pathToAvatars;
         multipartFile.getInputStream().transferTo(fos);
         fos.close();
 
-    }}
+        // todo save to db
+
+        return -1L;
+    }
 }
+
 
