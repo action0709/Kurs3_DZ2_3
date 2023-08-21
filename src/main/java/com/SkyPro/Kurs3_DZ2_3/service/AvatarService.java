@@ -1,6 +1,9 @@
 package com.SkyPro.Kurs3_DZ2_3.service;
 
+import com.SkyPro.Kurs3_DZ2_3.model.Avatar;
+import com.SkyPro.Kurs3_DZ2_3.model.Student;
 import com.SkyPro.Kurs3_DZ2_3.repository.AvatarRepository;
+import com.SkyPro.Kurs3_DZ2_3.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,11 +17,13 @@ import java.nio.file.Path;
 @Service
 public class AvatarService {
     private final AvatarRepository avatarRepository;
+    private final StudentRepository studentRepository;
     @Value("${path.to.avatars.folder}")
 private Path pathToAvatars;
 
-    public AvatarService(AvatarRepository avatarRepository) {
+    public AvatarService(AvatarRepository avatarRepository, StudentRepository studentRepository) {
         this.avatarRepository = avatarRepository;
+        this.studentRepository = studentRepository;
     }
 
     public  Long save(Long studentId, MultipartFile multipartFile) throws IOException {
@@ -31,7 +36,9 @@ private Path pathToAvatars;
         multipartFile.getInputStream().transferTo(fos);
         fos.close();
 
-        // todo save to db
+        Avatar avatar = new Avatar();
+        Student student = studentRepository.findById(studentId).orElseThrow();
+        avatar.setStudent(student);
 
         return -1L;
     }
