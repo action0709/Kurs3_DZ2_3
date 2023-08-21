@@ -30,7 +30,7 @@ public class StudentController {
     }
     @PostMapping
     public  Student create(@RequestBody Student student){
-        return studentService.create(student);
+                return studentService.create(student);
     }
     @PutMapping("/{id}")
     public Student update (@PathVariable("id") Long id,@RequestBody Student student){
@@ -38,8 +38,15 @@ public class StudentController {
     }
 
     @DeleteMapping("/id")
-    public void delete(@PathVariable("id") Long id){
+    public void remove(@PathVariable("id") Long id){
 
-        studentService.delete(id);
+        studentService.remove(id);}
+        @GetMapping("/by-age")
+        public Collection<Student> getByAge (@RequestParam int min,@RequestParam int max){
+            return studentService.getByAgeBetween (min, max);
+        }
+    @GetMapping("/by-faculty")
+    public Collection<Student> getByFaculty (@RequestParam Long facultyId){
+        return studentService.getByFacultyId(facultyId);
     }
-}
+    }
