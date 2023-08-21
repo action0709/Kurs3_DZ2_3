@@ -19,14 +19,14 @@ public class AvatarController {
 
     @PostMapping
     public ResponseEntity<Long> save (@RequestParam Long studentId,
-                                      @RequestParam MultipartFile multipartFile)
+                                      @RequestBody MultipartFile multipartFile)
     {
         try {
             Long avatarId = avatarService.save(studentId,multipartFile);
-                        return ResponseEntity.ok(avatarId);
+            return ResponseEntity.ok(avatarId);
                             }
     catch (IOException e){
-            e.printStackTrace();
+           e.printStackTrace();
             return  ResponseEntity.badRequest().build();
 
     }
