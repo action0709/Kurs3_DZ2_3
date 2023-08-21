@@ -32,15 +32,19 @@ private Path pathToAvatars;
         int dotIndex=originalFilename.lastIndexOf(".");
         String extension=originalFilename.substring(dotIndex);
         String fileName = studentId + extension;
-        FileOutputStream fos=new FileOutputStream(pathToAvatars.toAbsolutePath() + "/"+ fileName);
+        String absolutePath=pathToAvatars.toAbsolutePath()+"/"+ fileName;
+        FileOutputStream fos=new FileOutputStream(absolutePath);
         multipartFile.getInputStream().transferTo(fos);
         fos.close();
 
         Avatar avatar = new Avatar();
-        Student student = studentRepository.findById(studentId).orElseThrow();
-        avatar.setStudent(student);
-
-        return -1L;
+        avatar.setStudent(studentRepository.getReferenceById(studentId));
+        avatar.setFilePath(absolutePath);
+        avatar.setMediaType(multipartFile.getContentType());
+        avatar.setFileSize(multipartFile.getSize());
+        avatar.setData(multipartFile.getBytes());
+        avatarRepository.save(avatar);
+        return avatar.getId();
     }
 }
 
