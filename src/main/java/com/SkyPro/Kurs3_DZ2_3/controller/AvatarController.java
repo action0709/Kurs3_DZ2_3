@@ -1,6 +1,7 @@
 package com.SkyPro.Kurs3_DZ2_3.controller;
 
 import com.SkyPro.Kurs3_DZ2_3.service.AvatarService;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -16,7 +17,7 @@ public class AvatarController {
         this.avatarService = avatarService;
     }
 
-    @PostMapping
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Long> save (@RequestParam Long studentId,
                                       @RequestBody MultipartFile multipartFile)
     {
