@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.FileOutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -18,12 +19,16 @@ private Path pathToAvatars;
         this.avatarRepository = avatarRepository;
     }
 
-    public  Long save(Long StudentId, MultipartFile multipartFile){
+    public  Long save(Long studentId, MultipartFile multipartFile){
         Files.createDirectories(pathToAvatars);
         String  originalFilename= multipartFile.getOriginalFilename();
         int dotIndex=originalFilename.lastIndexOf(".");
         String extension=originalFilename.substring(dotIndex);
+        String fileName = studentId + extension;
+        FileOutputStream fos=new FileOutputStream(pathToAvatars.toAbsolutePath() + "/"+ fileName);
+        multipartFile.getInputStream().transferTo(fos);
+        fos.close();
 
-    }
+    }}
 }
 
