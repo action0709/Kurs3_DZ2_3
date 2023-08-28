@@ -38,6 +38,16 @@ public class FacultyControllerTest {
         assertThat(response.getBody()).isNotNull();
         return response;
     }
+    @Test
+    void getById(){
+        ResponseEntity<Faculty> response = createFaculty("filfac", "green");
+        Long facultyId = response.getBody().getId();
+
+        response = template.getForEntity("/faculty/" + facultyId, Faculty.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getBody()).isNotNull();
+        assertThat(response.getBody().getColor()).isEqualTo("green");
+    }
 
     @Test
     void update(){
@@ -49,6 +59,16 @@ public class FacultyControllerTest {
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getBody()).isNotNull();
         assertThat(response.getBody().getColor()).isEqualTo("red");
+    }
+    @Test
+    void delete(){
+        ResponseEntity<Faculty> response = createFaculty("filfac", "green");
+        Long facultyId = response.getBody().getId();
+
+        template.delete("/faculty/" + facultyId);
+        response = template.getForEntity("/faculty/" + facultyId, Faculty.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+
     }
 
 }
