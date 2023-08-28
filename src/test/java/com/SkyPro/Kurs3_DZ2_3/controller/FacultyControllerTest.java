@@ -19,13 +19,36 @@ public class FacultyControllerTest {
     @Test
     void create(){
 
-        ResponseEntity<Faculty> response = template.postForEntity("/faculty", new Faculty(null,
-                        "filfac", "green"),
-                Faculty.class);
+        String name = "filfac";
+        String color= "green";
+        ResponseEntity<Faculty> response = createFaculty(name, color);
 
                 assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getBody()).isNotNull();
-        assertThat(response.getBody().getName()).isEqualTo("filfac");
-        assertThat(response.getBody().getColor()).isEqualTo("green");
+        assertThat(response.getBody().getName()).isEqualTo(name);
+        assertThat(response.getBody().getColor()).isEqualTo(color);
     }
+
+    private ResponseEntity<Faculty> createFaculty(String name, String color) {
+        ResponseEntity<Faculty> response = template.postForEntity("/faculty", new Faculty(null,
+                        name, color),
+                Faculty.class);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getBody()).isNotNull();
+        return response;
+    }
+
+    @Test
+    void update(){
+        ResponseEntity<Faculty> response = createFaculty("filfac", "green");
+        Long facultyId = response.getBody().getId();
+
+        template.put("/faculty/" + facultyId, new Faculty(null, "filfac", "red"));
+         response = template.getForEntity("/faculty/" + facultyId, Faculty.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getBody()).isNotNull();
+        assertThat(response.getBody().getColor()).isEqualTo("red");
+    }
+
 }
