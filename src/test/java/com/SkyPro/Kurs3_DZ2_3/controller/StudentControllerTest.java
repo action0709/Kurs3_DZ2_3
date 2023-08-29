@@ -16,8 +16,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.util.Arrays;
 import java.util.Optional;
 
+import static com.fasterxml.jackson.databind.cfg.CoercionInputShape.Array;
 import static org.mockito.Mockito.when;
 
 
@@ -73,4 +75,24 @@ public class StudentControllerTest {
                 .andExpect(jsonPath("$.name").value("petr"))
                 .andExpect(jsonPath("$.age").value("25"));
     }
+    @Test
+void filteredByAge()throws Exception{
+
+        when(studentRepository.findAllByAgeBetween(10,26))
+                .thenReturn(Arrays.asList(
+                        new Student(1L, "petr", 25),
+                        new Student(2L, "ivan", 23)
+                ));
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/student//by-age?min=10&max=26")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$[0].name").value("petr"))
+                .andExpect(jsonPath("$[1].name").value("ivan"));
+
+    }
+
 }
+
