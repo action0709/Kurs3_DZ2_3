@@ -31,11 +31,11 @@ public class StudentControllerTest {
 
     @Test
     void getById(){
-        Student student = new Student(1L, "petr", "25");
-        when(studentRepository.findById()).thenReturn(Optional.of(student));
+        Student student = new Student(1L, "petr", 25);
+        when(studentRepository.findById(1L)).thenReturn(Optional.of(student));
         mockMvc.perform(MockMvcRequestBuilders.get("/student/1")
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(MediaType.APPLICATION_JSON))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 
     }
