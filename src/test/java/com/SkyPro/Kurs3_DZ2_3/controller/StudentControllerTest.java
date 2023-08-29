@@ -1,5 +1,6 @@
 package com.SkyPro.Kurs3_DZ2_3.controller;
 
+import com.SkyPro.Kurs3_DZ2_3.model.Faculty;
 import com.SkyPro.Kurs3_DZ2_3.model.Student;
 import com.SkyPro.Kurs3_DZ2_3.repository.FacultyRepository;
 import com.SkyPro.Kurs3_DZ2_3.repository.StudentRepository;
@@ -17,6 +18,7 @@ import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import static com.fasterxml.jackson.databind.cfg.CoercionInputShape.Array;
@@ -91,6 +93,24 @@ void filteredByAge()throws Exception{
                 .andExpect(jsonPath("$").isArray())
                 .andExpect(jsonPath("$[0].name").value("petr"))
                 .andExpect(jsonPath("$[1].name").value("ivan"));
+
+    }
+
+    @Test
+    void findByFaculty() throws Exception{
+        List<Student> students = Arrays.asList(
+                new Student(1L, "petr", 25),
+                new Student(2L, "ivan", 23));
+        Faculty faculty = new Faculty(1L, "filfac", "red");
+faculty.setStudent(students);
+        when(studentRepository.findAllByFaculty_Id(1L)).thenReturn(
+                students);
+        mockMvc.perform(MockMvcRequestBuilders.get("/student/by-faculty?facultyId=1")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$[0].name").value("petr"));
 
     }
 
