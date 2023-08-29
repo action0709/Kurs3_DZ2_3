@@ -82,7 +82,6 @@ public class FacultyControllerTest {
                         new Faculty(1L,"filfak", "blue"),
                         new Faculty(2L, "fizfak", "red")
                 ));
-
         mockMvc.perform(MockMvcRequestBuilders.get("/faculty/filtred?color=blue")
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON))
