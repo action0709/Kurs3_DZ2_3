@@ -2,6 +2,8 @@ package com.SkyPro.Kurs3_DZ2_3.controller;
 
 import com.SkyPro.Kurs3_DZ2_3.Kurs3Dz23Application;
 import com.SkyPro.Kurs3_DZ2_3.model.Faculty;
+import com.SkyPro.Kurs3_DZ2_3.repository.FacultyRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,6 +20,14 @@ webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT )
 public class FacultyControllerTest {
 @Autowired
     TestRestTemplate template;
+    @Autowired
+    FacultyRepository facultyRepository;
+
+@AfterEach
+void clearDb(){
+facultyRepository.deleteAll();
+}
+
     @Test
     void create(){
 
