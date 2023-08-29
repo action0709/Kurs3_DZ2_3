@@ -60,4 +60,17 @@ public class StudentControllerTest {
                 .andExpect(jsonPath("$.name").value("petr"))
                 .andExpect(jsonPath("$.age").value("25"));
     }
+    @Test
+    void update()throws Exception{
+        Student student = new Student(1L, "petr", 25);
+        when(studentRepository.findById(1L)).thenReturn(Optional.of(student));
+        when(studentRepository.save(ArgumentMatchers.any(Student.class))).thenReturn(student);
+        mockMvc.perform(MockMvcRequestBuilders.put("/student/1")
+                        .content(objectMapper.writeValueAsString(student))
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value("petr"))
+                .andExpect(jsonPath("$.age").value("25"));
+    }
 }
