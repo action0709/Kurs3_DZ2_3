@@ -9,6 +9,8 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.util.Collection;
+
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @SpringBootTest(classes = Kurs3Dz23Application.class,
@@ -60,16 +62,20 @@ public class FacultyControllerTest {
         assertThat(response.getBody()).isNotNull();
         assertThat(response.getBody().getColor()).isEqualTo("red");
     }
-    @Test
-    void getById(){
-        ResponseEntity<Faculty> response = createFaculty("filfac", "green");
-        Long facultyId = response.getBody().getId();
 
-        response = template.getForEntity("/faculty/" + facultyId, Faculty.class);
+    @Test
+    void getAll(){
+        createFaculty("math", "red");
+        createFaculty("filfac", "blue");
+
+        ResponseEntity <Collection> response = template
+                .getForEntity("/faculty", Collection.class);
+
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getBody()).isNotNull();
-        assertThat(response.getBody().getColor()).isEqualTo("green");
+        assertThat(response.getBody().size()).isEqualTo(2);
     }
+
 
 
 }
