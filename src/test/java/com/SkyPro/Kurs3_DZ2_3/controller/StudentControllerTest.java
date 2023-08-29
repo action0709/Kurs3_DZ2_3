@@ -10,12 +10,15 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.MediaType;
+import org.springframework.test.web.client.RequestMatcher;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.Optional;
 
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(StudentController.class)
@@ -30,13 +33,16 @@ public class StudentControllerTest {
     StudentService studentService;
 
     @Test
-    void getById(){
+    void getById() throws Exception {
         Student student = new Student(1L, "petr", 25);
         when(studentRepository.findById(1L)).thenReturn(Optional.of(student));
         mockMvc.perform(MockMvcRequestBuilders.get("/student/1")
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
-
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value("petr"))
+                .andExpect((ResultMatcher) jsonPath("$.age").value("25"));
     }
+
+
 }
