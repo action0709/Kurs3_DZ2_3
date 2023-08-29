@@ -74,7 +74,23 @@ public class FacultyControllerTest {
                 .andExpect(jsonPath("$.name").value("filfak"))
                 .andExpect(jsonPath("$.color").value("blue"));
     }
+    @Test
+    void filteredByColor()throws Exception{
 
+        when(facultyRepository.findAllByColor("blue"))
+                .thenReturn(Arrays.asList(
+                        new Faculty(1L,"filfak", "blue"),
+                        new Faculty(2L, "fizfak", "red")
+                ));
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/faculty/filtred?color=blue")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].name").value("filfak"));
+
+
+    }
 
 }
 

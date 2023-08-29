@@ -86,7 +86,7 @@ void filteredByAge()throws Exception{
                         new Student(2L, "ivan", 23)
                 ));
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/student//by-age?min=10&max=26")
+        mockMvc.perform(MockMvcRequestBuilders.get("/student/by-age?min=10&max=26")
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
