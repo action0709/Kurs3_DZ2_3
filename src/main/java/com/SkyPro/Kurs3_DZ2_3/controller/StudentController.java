@@ -37,10 +37,10 @@ public class StudentController {
         return studentService.update(id, student);
     }
 
-    @DeleteMapping("/id")
-    public void remove(@PathVariable("id") Long id){
+    @DeleteMapping("/{id}")
+    public Student remove(@PathVariable("id") Long id){
 
-        studentService.remove(id);}
+        return studentService.remove(id);}
         @GetMapping("/by-age")
         public Collection<Student> getByAge (@RequestParam int min,@RequestParam int max){
             return studentService.getByAgeBetween (min, max);

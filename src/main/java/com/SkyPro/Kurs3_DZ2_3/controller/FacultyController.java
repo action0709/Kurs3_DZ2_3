@@ -44,10 +44,10 @@ public class FacultyController {
         return facultyService.update(id, faculty);
     }
 
-    @DeleteMapping("/id")
-    public void remove(@PathVariable("id") Long id){
+    @DeleteMapping("/{id}")
+    public Faculty remove(@PathVariable("id") Long id){
 
-        facultyService.remove(id);
+       return facultyService.remove(id);
     }
     @GetMapping("/by-student")
     public Faculty getByStudent(@RequestParam Long studentId){
