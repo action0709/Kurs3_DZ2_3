@@ -113,6 +113,19 @@ faculty.setStudent(students);
                 .andExpect(jsonPath("$[0].name").value("petr"));
 
     }
+    @Test
+    void delete() throws Exception{
+        Student student = new Student(1L, "petr", 25);
+                    when(studentRepository.findById(1L)).thenReturn(Optional.of(
+                student));
 
+        mockMvc.perform(MockMvcRequestBuilders.delete("/student/1")
+                        .content(objectMapper.writeValueAsString(student))
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value("petr"))
+                .andExpect(jsonPath("$.age").value("25"));
+    }
 }
 
