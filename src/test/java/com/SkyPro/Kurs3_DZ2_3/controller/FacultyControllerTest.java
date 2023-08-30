@@ -90,6 +90,20 @@ public class FacultyControllerTest {
 
 
     }
+    @Test
+    void delete() throws Exception{
+        Faculty faculty =  new Faculty(1L,"filfak", "blue");
+        when(facultyRepository.findById(1L)).thenReturn(Optional.of(
+                faculty));
+
+        mockMvc.perform(MockMvcRequestBuilders.delete("/faculty/1")
+                        .content(objectMapper.writeValueAsString(faculty))
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value("filfak"))
+                .andExpect(jsonPath("$.color").value("blue"));
+    }
 
 }
 
