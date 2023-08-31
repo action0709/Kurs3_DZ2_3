@@ -88,7 +88,15 @@ facultyRepository.deleteAll();
         assertThat(response.getBody()).isNotNull();
         assertThat(response.getBody().size()).isEqualTo(2);
     }
+    @Test
+    void delete(){
+        ResponseEntity<Faculty> response = createFaculty("filfac", "green");
+        Long facultyId = response.getBody().getId();
+        template.delete("/faculty/"+facultyId);
+        response = template.getForEntity("/faculty/" + facultyId, Faculty.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
 
+    }
 
 
 
