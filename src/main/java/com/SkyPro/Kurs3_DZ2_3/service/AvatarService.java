@@ -1,10 +1,12 @@
 package com.SkyPro.Kurs3_DZ2_3.service;
 
+import com.SkyPro.Kurs3_DZ2_3.dto.AvatarDto;
 import com.SkyPro.Kurs3_DZ2_3.model.Avatar;
 import com.SkyPro.Kurs3_DZ2_3.model.Student;
 import com.SkyPro.Kurs3_DZ2_3.repository.AvatarRepository;
 import com.SkyPro.Kurs3_DZ2_3.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -13,7 +15,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class AvatarService {
@@ -57,6 +61,14 @@ private Path pathToAvatars;
         avatar.setData(multipartFile.getBytes());
         avatarRepository.save(avatar);
         return avatar;
+    }
+
+    public List<AvatarDto> getPage(int pageNum){
+        PageRequest pageRequest = PageRequest.of(pageNum, 3);
+        List<Avatar> avatars = avatarRepository.findAll(pageRequest).getContent();
+        return avatars.stream()
+                .map(AvatarDto::fromEntity)
+                .collect(Collectors.toList());
     }
 }
 
