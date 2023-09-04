@@ -9,10 +9,7 @@ import com.SkyPro.Kurs3_DZ2_3.model.Student;
 import com.SkyPro.Kurs3_DZ2_3.repository.StudentRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -65,5 +62,14 @@ public class StudentService {
 
     public Collection<Student> getByFacultyId(Long facultyId) {
         return studentRepository.findAllByFaculty_Id(facultyId);
+    }
+    public long count(){
+        return studentRepository.countStudents();
+    }
+    public  double average(){
+        return studentRepository.averegeAge();
+    }
+    public List<Student> getLastStudent (int quantity){
+        return studentRepository.findLastStudents(quantity);
     }
 }
