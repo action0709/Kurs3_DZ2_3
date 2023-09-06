@@ -26,6 +26,11 @@ public class StudentService {
         return studentRepository.findById(id)
                 .orElseThrow(StudentNotFoundException::new);
     }
+    public Student getByName(String name) {
+
+        return studentRepository.findByName(name);
+
+    }
 
     public Collection<Student> getAll() {
         return studentRepository.findAll();
