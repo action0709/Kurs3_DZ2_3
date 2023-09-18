@@ -79,5 +79,9 @@ public class StudentController {
     public List<String> startsWithA(){
         return studentService.getAllStartsWith();
     }
+    @GetMapping("/stream/average-age")
+    public double getAverageAge(){
+        return studentService.getAverageAge();
+    }
     }
 

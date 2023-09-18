@@ -130,4 +130,10 @@ public List <String>getAllStartsWith() {
             .sorted()
             .collect(Collectors.toList());
 }
+public  double getAverageAge(){
+    return studentRepository.findAll().stream()
+            .mapToInt(Student::getAge)
+            .average()
+            .orElseThrow(StudentNotFoundException::new);
+}
 }
