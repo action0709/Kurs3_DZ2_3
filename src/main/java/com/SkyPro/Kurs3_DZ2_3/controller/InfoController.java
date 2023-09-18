@@ -33,8 +33,8 @@ public void calculate(){
                 .parallel()
                 .limit(1_000_000)
                 .reduce(0, (a, b) -> a + b);
-        long timeConsumed = System.currentTimeMillis()-startTime;
-        logger.info("время работы после оптимизации: " + timeConsumed);
+        long timeConsumed1 = System.currentTimeMillis()-startTime;
+        logger.info("время работы после оптимизации: " + timeConsumed1);
 
 
     }
