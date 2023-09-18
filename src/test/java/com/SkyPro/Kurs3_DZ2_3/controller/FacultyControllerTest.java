@@ -88,7 +88,29 @@ facultyRepository.deleteAll();
         assertThat(response.getBody()).isNotNull();
         assertThat(response.getBody().size()).isEqualTo(2);
     }
+    @Test
+    void delete(){
+        ResponseEntity<Faculty> response = createFaculty("filfac", "green");
+        Long facultyId = response.getBody().getId();
+        template.delete("/faculty/"+facultyId);
+        response = template.getForEntity("/faculty/" + facultyId, Faculty.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
 
+    }
+    @Test
+    void filteredByColorOrName(){
+        String color = "blue";
+        createFaculty("math", "red");
+        createFaculty("filfac",color);
+
+        ResponseEntity<Collection> response = template
+                .getForEntity("/faculty/by-color-or-name?search="+color, Collection.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getBody()).isNotNull();
+        assertThat(response.getBody().size()).isEqualTo(1);
+        Map<String, String> next = (HashMap) response.getBody().iterator().next();
+        assertThat(next.get("color")).isEqualTo(color);
+            }
 
 
 

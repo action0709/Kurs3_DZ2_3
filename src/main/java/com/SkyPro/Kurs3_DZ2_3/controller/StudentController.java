@@ -5,6 +5,7 @@ import com.SkyPro.Kurs3_DZ2_3.service.StudentService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
+import java.util.List;
 
 @RestController
 @RequestMapping("/student")
@@ -37,16 +38,33 @@ public class StudentController {
         return studentService.update(id, student);
     }
 
-    @DeleteMapping("/id")
-    public void remove(@PathVariable("id") Long id){
+    @DeleteMapping("/{id}")
+    public Student remove(@PathVariable("id") Long id){
 
-        studentService.remove(id);}
+        return studentService.remove(id);}
         @GetMapping("/by-age")
         public Collection<Student> getByAge (@RequestParam int min,@RequestParam int max){
             return studentService.getByAgeBetween (min, max);
         }
+    @GetMapping("/by-name")
+    public Student getByname (@RequestParam String name){
+        return studentService.getByName(name);
+    }
     @GetMapping("/by-faculty")
     public Collection<Student> getByFaculty (@RequestParam Long facultyId){
         return studentService.getByFacultyId(facultyId);
     }
+    @GetMapping("/count")
+    public long count(){
+        return studentService.count();
     }
+    @GetMapping("/average")
+    public double average(){
+        return studentService.average();
+    }
+    @GetMapping("/last-five")
+    public List<Student> getLastFive()  {
+        return studentService.getLastStudent(5);
+    }
+
+}
