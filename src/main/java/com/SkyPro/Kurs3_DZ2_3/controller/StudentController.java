@@ -67,4 +67,8 @@ public class StudentController {
         return studentService.getLastStudent(5);
     }
 
-}
+    @GetMapping("/thread/async")
+    public void printAsync(){
+        studentService.printAsync();
+    }
+    }
