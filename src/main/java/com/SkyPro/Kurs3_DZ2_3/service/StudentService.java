@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.SQLOutput;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class StudentService {
@@ -121,5 +122,12 @@ logger.info("invoked method getById");
     }
     private synchronized void printSync(Student student){
         System.out.println(student);
+}
+public List <String>getAllStartsWith() {
+    return studentRepository.findAll().stream()
+            .map(Student::getName)
+            .filter(s -> s.startsWith("A"))
+            .sorted()
+            .collect(Collectors.toList());
 }
 }

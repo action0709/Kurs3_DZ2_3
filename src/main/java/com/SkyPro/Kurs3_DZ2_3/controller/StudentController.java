@@ -75,4 +75,9 @@ public class StudentController {
     public void printSync(){
         studentService.printSync();
     }
+    @GetMapping("/stream/starts-with-a")
+    public List<String> startsWithA(){
+        return studentService.getAllStartsWith();
     }
+    }
+
