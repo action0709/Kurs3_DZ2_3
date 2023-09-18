@@ -103,4 +103,23 @@ logger.info("invoked method getById");
         t1.start();
         t2.start();
     }
+    public void printSync(){
+        List<Student> all = studentRepository.findAll();
+        printSync(all.get(0));
+        printSync(all.get(1));
+
+        Thread t1 = new Thread(() -> {
+            printSync(all.get(2));
+            printSync(all.get(3));
+        });
+        Thread t2 = new Thread(() -> {
+            printSync(all.get(4));
+            printSync(all.get(5));
+        });
+        t1.start();
+        t2.start();
+    }
+    private synchronized void printSync(Student student){
+        System.out.println(student);
+}
 }

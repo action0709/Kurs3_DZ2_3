@@ -71,4 +71,8 @@ public class StudentController {
     public void printAsync(){
         studentService.printAsync();
     }
+    @GetMapping("/thread/sync")
+    public void printSync(){
+        studentService.printSync();
+    }
     }
