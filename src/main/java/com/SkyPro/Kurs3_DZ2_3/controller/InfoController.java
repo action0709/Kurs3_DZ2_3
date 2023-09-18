@@ -22,19 +22,19 @@ public class InfoController {
     @GetMapping("/calculate")
 public void calculate(){
         long startTime = System.currentTimeMillis();
-       Stream.iterate(1, a -> a + 1)
+       Integer redoce=Stream.iterate(1, a -> a + 1)
                .limit(1_000_000)
                .reduce(0, (a, b) -> a + b);
         long timeConsumed = System.currentTimeMillis()-startTime;
         logger.info("время работы: " + timeConsumed);
 
         startTime = System.currentTimeMillis();
-        Stream.iterate(1, a -> a + 1)
+        Integer reduce2= Stream.iterate(1, a -> a + 1)
                 .parallel()
                 .limit(1_000_000)
                 .reduce(0, (a, b) -> a + b);
         long timeConsumed = System.currentTimeMillis()-startTime;
-        logger.info("время работы: " + timeConsumed);
+        logger.info("время работы после оптимизации: " + timeConsumed);
 
 
     }
