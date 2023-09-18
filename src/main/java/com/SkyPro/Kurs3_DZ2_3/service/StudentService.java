@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLOutput;
 import java.util.*;
 
 @Service
@@ -86,4 +87,39 @@ logger.info("invoked method getById");
         logger.info("invoked metod getLastStudent");
         return studentRepository.findLastStudents(quantity);
     }
+    public void printAsync(){
+        List<Student> all = studentRepository.findAll();
+        System.out.println(all.get(0));
+        System.out.println(all.get(1));
+
+        Thread t1 = new Thread(() -> {
+            System.out.println(all.get(2));
+            System.out.println(all.get(3));
+        });
+        Thread t2 = new Thread(() -> {
+            System.out.println(all.get(4));
+            System.out.println(all.get(5));
+        });
+        t1.start();
+        t2.start();
+    }
+    public void printSync(){
+        List<Student> all = studentRepository.findAll();
+        printSync(all.get(0));
+        printSync(all.get(1));
+
+        Thread t1 = new Thread(() -> {
+            printSync(all.get(2));
+            printSync(all.get(3));
+        });
+        Thread t2 = new Thread(() -> {
+            printSync(all.get(4));
+            printSync(all.get(5));
+        });
+        t1.start();
+        t2.start();
+    }
+    private synchronized void printSync(Student student){
+        System.out.println(student);
+}
 }
