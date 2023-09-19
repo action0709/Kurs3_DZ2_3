@@ -67,4 +67,21 @@ public class StudentController {
         return studentService.getLastStudent(5);
     }
 
-}
+    @GetMapping("/thread/async")
+    public void printAsync(){
+        studentService.printAsync();
+    }
+    @GetMapping("/thread/sync")
+    public void printSync(){
+        studentService.printSync();
+    }
+    @GetMapping("/stream/starts-with-a")
+    public List<String> startsWithA(){
+        return studentService.getAllStartsWith();
+    }
+    @GetMapping("/stream/average-age")
+    public double getAverageAge(){
+        return studentService.getAverageAge();
+    }
+    }
+

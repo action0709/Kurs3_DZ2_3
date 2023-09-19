@@ -9,12 +9,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLOutput;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class StudentService {
     private static final Logger logger = LoggerFactory.getLogger (StudentService.class);
     private final StudentRepository studentRepository;
+    private int counter=0;
 
     public StudentService(StudentRepository studentRepository) {
         this.studentRepository = studentRepository;
@@ -86,4 +89,60 @@ logger.info("invoked method getById");
         logger.info("invoked metod getLastStudent");
         return studentRepository.findLastStudents(quantity);
     }
+    public void printAsync(){
+        List<Student> all = studentRepository.findAll();
+        System.out.println(all.get(0));
+        System.out.println(all.get(1));
+
+        Thread t1 = new Thread(() -> {
+            System.out.println(all.get(2));
+            System.out.println(all.get(3));
+        });
+        Thread t2 = new Thread(() -> {
+            System.out.println(all.get(4));
+            System.out.println(all.get(5));
+        });
+        t1.start();
+        t2.start();
+    }
+    public void printSync(){
+
+        List<String> all = getAll()
+                .stream()
+                .map(Student::getName)
+                .toList();
+
+        printSync(all);
+        printSync(all);
+
+         new Thread(() -> {
+            printSync(all);
+            printSync(all);
+                   }).start();
+         new Thread(() -> {
+            printSync(all);
+            printSync(all);
+        }).start();
+
+    }
+    private synchronized void printSync(List<String> students){
+        logger.info(students.get(counter++%students.size()));
+
+
+}
+
+
+public List <String>getAllStartsWith() {
+    return studentRepository.findAll().stream()
+            .map(Student::getName)
+            .filter(s -> s.startsWith("A"))
+            .sorted()
+            .collect(Collectors.toList());
+}
+public  double getAverageAge(){
+    return studentRepository.findAll().stream()
+            .mapToInt(Student::getAge)
+            .average()
+            .orElseThrow(StudentNotFoundException::new);
+}
 }

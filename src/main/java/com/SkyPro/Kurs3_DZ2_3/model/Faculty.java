@@ -56,6 +56,8 @@ public class Faculty {
         this.student = student;
     }
 
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
