@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 public class StudentService {
     private static final Logger logger = LoggerFactory.getLogger (StudentService.class);
     private final StudentRepository studentRepository;
+    private int counter;
 
     public StudentService(StudentRepository studentRepository) {
         this.studentRepository = studentRepository;
@@ -105,6 +106,7 @@ logger.info("invoked method getById");
         t2.start();
     }
     public void printSync(){
+
         List<Student> all = studentRepository.findAll();
         printSync(all.get(0));
         printSync(all.get(1));
@@ -121,7 +123,7 @@ logger.info("invoked method getById");
         t2.start();
     }
     private synchronized void printSync(Student student){
-        System.out.println(student);
+        logger.info(student.toString());
 }
 public List <String>getAllStartsWith() {
     return studentRepository.findAll().stream()
